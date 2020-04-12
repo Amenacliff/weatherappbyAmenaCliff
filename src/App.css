@@ -24,6 +24,11 @@ background-image: url(./assets/warm-bg.jpg);
   margin-top: -5px;
   border-radius: 8px;
   text-align: center;
+  border :  2px solid #ccc
+}
+
+input:focus{
+  outline: none
 }
 
 .temp-box{

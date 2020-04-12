@@ -10,29 +10,50 @@ export class App extends Component {
   constructor(){
     super()
     this.state = {
+      result :'',
       query :'',
       weather : {},
       tempreture : '',
-      slug :''
+      slug :'',
+      final :''
     }
   }
   
   callApi = (event)=>{
-    const {query} = this.state
+    const {query,tempreture, result} = this.state
     if(event.key === 'Enter'){
     fetch(`${api.base}weather?q=${query}&units=metric&APPID=${api.key}`)
   .then(res=>res.json())
   .then(result=>{
     const temp = result.main.temp
-    const slug = result.sys.  country 
+    const slug = result.sys.country 
     this.setState({
       weather : result,
       tempreture : temp,
       query : '',
-      slug: slug
+      slug: slug,
+      result : ''
     })
   })
+  .catch((error)=>{
+    error = 'failed'
+    this.setState({
+      result : error,
+    })
+  })  
 }
+
+
+  if(tempreture > 16){
+     this.setState({
+       final : 'Hot/Warm'
+     })
+    }
+    else if(tempreture < 16 && result === '' ){
+      this.setState({
+        final : 'Cold'
+      })
+    }
   }
 
   cityTyped =(event)=>{
@@ -42,10 +63,14 @@ export class App extends Component {
   }
 
 
+
+
+  
+
   render() {
-    const {slug, tempreture , weather} = this.state
+    const {result, slug, tempreture , weather} = this.state
     return (
-      <div className={(typeof tempreture != 'undefined') ? ((tempreture  > 16 )? 'appwarm' : 'app') :'app'}>
+      <div className={(typeof tempreture != 'undefined') ? ((tempreture  >= 16 )? 'appwarm' : 'app') :'app'}>
         {/* {tempreture < 16 ? 'app' : 'appwarm'} */}
         <input className='input'  onChange ={this.cityTyped} onKeyPress ={this.callApi} type='text' placeholder='Search.... City'/><br></br><br/><br/><br/>
 <p style={{color:'white', fontSize:'60px',}}>{weather.name } , {slug}</p><br/><br/><br/><br/>
@@ -53,7 +78,8 @@ export class App extends Component {
     <h1  className='temp' style={{color:'white', fontSize:'100px', textAlign:'center'}}>{Math.round(tempreture)+'°C'}</h1>
     </div><br/><br/><br/>
 
-    <h2 style ={{color:'white', fontSize:'50px'}}> {tempreture > 16 ? 'Warm /  Hot':'Cold'}</h2>
+    <h2 style ={{color:'white', fontSize:'50px'}}>{tempreture > 16 ? 'Warm /  Hot' : tempreture < 16 ? 'Cold' : ''}</h2>
+    <p style ={{color:'white', fontSize:'50px'}}>{result === 'failed'? 'City Not Found / Out of Bandwidth' : ''}</p>
 </div>
     )
   }
