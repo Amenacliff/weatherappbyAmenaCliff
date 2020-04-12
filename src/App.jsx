@@ -39,6 +39,9 @@ export class App extends Component {
     error = 'failed'
     this.setState({
       result : error,
+      tempreture : '',
+      weather : '',
+      slug : ''
     })
   })  
 }
@@ -78,7 +81,7 @@ export class App extends Component {
     <h1  className='temp' style={{color:'white', fontSize:'100px', textAlign:'center'}}>{Math.round(tempreture)+'°C'}</h1>
     </div><br/><br/><br/>
 
-    <h2 style ={{color:'white', fontSize:'50px'}}>{tempreture > 16 ? 'Warm /  Hot' : tempreture < 16 ? 'Cold' : ''}</h2>
+    <h2 style ={{color:'white', fontSize:'50px'}}>{tempreture > 16 ? 'Warm /  Hot' : tempreture < 16 && tempreture !== '' ?   'Cold' : ''}</h2>
     <p style ={{color:'white', fontSize:'50px'}}>{result === 'failed'? 'City Not Found / Out of Bandwidth' : ''}</p>
 </div>
     )
